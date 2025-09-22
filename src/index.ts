@@ -15,7 +15,7 @@ server.listen(PORT, async () => {
 		await repository.sequelizeClient.sync();
 		console.log('All models were synchronized and migrated successfully.');
 	} catch (error) {
-		console.error('Unable to sync or migrate tables: ', error);
+		console.error('Unable to sync or migrate tables: \n', error);
 		process.exit(1);
 	}
 
