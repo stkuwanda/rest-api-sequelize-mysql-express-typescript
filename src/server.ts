@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
+import { createRoutes } from './routes';
 
 export const createServer = () => {
 	const app = express();
@@ -20,7 +21,9 @@ export const createServer = () => {
 		res.json({ ok: true });
 	});
 
-  // More routes will be added here
+  // Import and use routes
+	createRoutes(app);
+	
   // Error handling will be added here
 	return app;
 };
