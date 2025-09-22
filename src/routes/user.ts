@@ -78,7 +78,7 @@ export const createUserRoutes = (app: Express) => {
 			const deletedCount = await repository.deleteUser(userId);
 
 			if (deletedCount) {
-				res.status(204).json({ user_deleted: deletedCount });
+				res.json({ user_deleted: deletedCount });
 			} else {
 				res.status(404).json({ error: 'User not found' });
 			}
