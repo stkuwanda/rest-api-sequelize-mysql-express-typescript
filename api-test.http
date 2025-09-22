@@ -22,7 +22,7 @@ PUT http://localhost:3000/users/1 HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Alex Doe",
+  "name": "Alex Doe"
 }
 
 ### Delete a user

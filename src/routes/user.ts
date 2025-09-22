@@ -10,7 +10,14 @@ export const createUserRoutes = (app: Express) => {
 			res.status(201).json(newUser);
 		} catch (error) {
 			console.error('Error creating user:', error);
-			res.status(400).json({ error: {message: error instanceof Error ? error.message : 'There was an error creating the user.'} });
+			res.status(400).json({
+				error: {
+					message:
+						error instanceof Error
+							? error.message
+							: 'There was an error creating the user.',
+				},
+			});
 		}
 	});
 
@@ -37,6 +44,46 @@ export const createUserRoutes = (app: Express) => {
 			}
 		} catch (error) {
 			console.error('Error fetching user:', error);
+			res.status(500).json({ error: 'Internal Server Error' });
+		}
+	});
+
+	// Update user by ID
+	app.put('/users/:id', async (req: Request, res: Response) => {
+		try {
+			const userId = parseInt(req.params.id, 10);
+			const userPayload = {
+				name: req.body.name,
+				email: req.body.email,
+			};
+      console.log('userPayload: \n', userPayload);
+
+			const updatedUser = await repository.updateUser(userId, userPayload);
+			res.status(200).json({ user: updatedUser });
+		} catch (error) {
+			console.error('Error updating user:', error);
+			res.status(400).json({
+				error:
+					error instanceof Error
+						? error.message
+						: 'There was an error updating the user.',
+			});
+		}
+	});
+
+	// Delete user by ID
+	app.delete('/users/:id', async (req: Request, res: Response) => {
+		try {
+			const userId = parseInt(req.params.id, 10);
+			const deletedCount = await repository.deleteUser(userId);
+
+			if (deletedCount) {
+				res.status(204).json({ user_deleted: deletedCount });
+			} else {
+				res.status(404).json({ error: 'User not found' });
+			}
+		} catch (error) {
+			console.error('Error deleting user:', error);
 			res.status(500).json({ error: 'Internal Server Error' });
 		}
 	});
