@@ -1,5 +1,8 @@
 import BaseRepository from './BaseRepository';
+import { AddUserRepository } from './AddUserRepository';
 
-const repository = new BaseRepository();
+// Create an instance of the extended repository
+const ExtendedRepository = AddUserRepository(BaseRepository);
+const repository = new ExtendedRepository();
 
 export default repository;

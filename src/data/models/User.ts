@@ -5,7 +5,7 @@ import { Table, Column, Model, DataType, Unique, UpdatedAt, CreatedAt } from 'se
   tableName: 'users',
   modelName: 'User',
 })
-export class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   @Column({
     type: DataType.BIGINT,
     autoIncrement: true,
