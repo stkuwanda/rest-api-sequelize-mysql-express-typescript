@@ -12,7 +12,7 @@ POST http://localhost:3000/users HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "John Doe",
+  "name": "",
   "email": "john@doe.com"
 }
 
@@ -32,3 +32,7 @@ DELETE http://localhost:3000/users/1 HTTP/1.1
 ### Get all users
 
 GET http://localhost:3000/users HTTP/1.1
+
+### 404 Example
+
+GET http://localhost:3000/unknown HTTP/1.1
