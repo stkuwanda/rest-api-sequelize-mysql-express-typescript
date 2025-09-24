@@ -11,6 +11,8 @@ import {
 	Unique,
 	UpdatedAt,
 	CreatedAt,
+	AllowNull,
+	IsEmail,
 } from 'sequelize-typescript';
 
 @Table({
@@ -28,10 +30,18 @@ export default class User extends Model<
 	})
 	declare id: CreationOptional<number>;
 
-	@Column
+	@AllowNull(false) // Ensure name cannot be null
+	@Column({
+		validate: {
+			notEmpty: true, // Ensure name is not an empty string
+			len: [2, 100], // Ensure name length is between 2 and 100 characters
+		},
+	})
 	declare name: string;
 
-	@Unique
+	@Unique // Ensure email is unique
+	@AllowNull(false) // Ensure email cannot be null
+	@IsEmail // Validate email format
 	@Column
 	declare email: string;
 
