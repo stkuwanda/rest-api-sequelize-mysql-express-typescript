@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'; // Import express to ensure types are available
-import { ValidationError } from 'sequelize';
+import { ConnectionError, ValidationError } from 'sequelize';
 import { getErrorMessage } from '../utils/error-utils';
 
 // Centralized error handling middleware
@@ -9,14 +9,14 @@ export default function errorHandler(
 	res: Response,
 	next: NextFunction
 ): void {
-  console.error('Error handler triggered:\n', err);
+	console.error('Error handler triggered:\n', err);
 
-  // If headers are already sent, delegate to the default Express error handler
+	// If headers are already sent, delegate to the default Express error handler
 	if (res.headersSent) {
-		return next(err);
+		return next(err); // Call next with the error to ensure any further error handling middleware is invoked
 	}
 
-  // Handle validation errors from Sequelize
+	// Handle validation errors from Sequelize
 	if (err instanceof ValidationError) {
 		res.status(422).json({
 			error: {
@@ -28,12 +28,23 @@ export default function errorHandler(
 				})),
 			},
 		});
-		return;
+		return next(err); // Call next with the error to ensure any further error handling middleware is invoked
 	}
 
-  // For other types of errors, return a generic 500 Internal Server Error
-  const message = getErrorMessage(err);
-  res.status(500).json({ error: { message } });
+	if (err instanceof ConnectionError) {
+		res.status(503).json({
+			error: {
+				message: 'Database connection error. Please try again later.',
+				details: { message: err.message },
+			},
+		});
 
-  next(err); // Call next with the error to ensure any further error handling middleware is invoked
+		return next(err); // Call next with the error to ensure any further error handling middleware is invoked
+	}
+
+	// For other types of errors, return a generic 500 Internal Server Error
+	const message = getErrorMessage(err);
+	res.status(500).json({ error: { message } });
+
+	next(err); // Call next with the error to ensure any further error handling middleware is invoked
 }
