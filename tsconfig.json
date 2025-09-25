@@ -46,4 +46,5 @@
     // "skipLibCheck": true,
   },
   "include": ["src/**/*"],
+  "exclude": ["src/umzug.ts", "src/data/migrations/**/*"] 
 }
