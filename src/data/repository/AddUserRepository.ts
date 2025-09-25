@@ -17,7 +17,7 @@ export function AddUserRepository<TBase extends Constructor<BaseRepository>>(
 
 		// Get all users with a default limit
 		getUsers(): Promise<User[]> {
-			return User.findAll({ attributes: ['non_existent_column'], limit: this.defaultLimit });
+			return User.findAll({ limit: this.defaultLimit });
 		}
 
 		// Get a user by their ID
