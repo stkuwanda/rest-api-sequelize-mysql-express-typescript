@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'; // Import express to ensure types are available
-import { ConnectionError, ValidationError } from 'sequelize';
+import { ConnectionError, DatabaseError, ValidationError } from 'sequelize';
 import { getErrorMessage } from '../utils/error-utils';
 
 // Centralized error handling middleware
@@ -31,6 +31,7 @@ export default function errorHandler(
 		return next(err); // Call next with the error to ensure any further error handling middleware is invoked
 	}
 
+	// Handle database connection errors
 	if (err instanceof ConnectionError) {
 		res.status(503).json({
 			error: {
@@ -39,6 +40,19 @@ export default function errorHandler(
 			},
 		});
 
+		return next(err); // Call next with the error to ensure any further error handling middleware is invoked
+	}
+
+	// Handle other database-related errors
+	// such as constraint violations, etc.
+	if (err instanceof DatabaseError) {
+		res.status(500).json({
+			error: {
+				message: 'A database error occurred.',
+				details: { message: err.message },
+			},
+		});
+		
 		return next(err); // Call next with the error to ensure any further error handling middleware is invoked
 	}
 
