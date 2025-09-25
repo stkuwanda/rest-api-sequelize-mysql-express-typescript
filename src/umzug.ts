@@ -3,12 +3,12 @@ import { Sequelize, Options } from 'sequelize';
 import config from './config';
 
 // Initialize Sequelize
-const sequelizeOptions: Options = config.db;
+const sequelizeOptions: Options = {...config.db, dialect: 'mysql'};
 const sequelize = new Sequelize(sequelizeOptions);
 
 // Initialize Umzug migrator
 export const migrator = new Umzug({
-	migrations: { glob: ['', { cwd: __dirname }] },
+	migrations: { glob: ['data/migrations/*.ts', { cwd: __dirname }] },
 	context: sequelize,
 	storage: new SequelizeStorage({
 		sequelize,
