@@ -51,3 +51,7 @@ Content-Type: application/json
 ### List user's posts
 
 GET http://localhost:3000/users/1/posts HTTP/1.1
+
+### List posts
+
+GET http://localhost:3000/posts HTTP/1.1

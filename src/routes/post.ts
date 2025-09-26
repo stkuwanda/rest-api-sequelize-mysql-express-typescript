@@ -39,4 +39,13 @@ export const createPostRoutes = (app: Express) => {
 			res.status(200).json({ posts });
 		})
 	);
+
+	// Get all posts with their authors (eager loading example)
+	app.get(
+		'/posts',
+		asyncHandler(async (req: Request, res: Response) => {
+			const posts = await repository.getPosts(); // Fetching posts along with their associated user (author) data is called eager loading.
+			res.status(200).json({ posts });
+		})
+	);
 };
