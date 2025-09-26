@@ -27,7 +27,7 @@ export const createServer = () => {
 
 	// 404 handler
 	app.use((req: Request, res: Response) => {
-		res.status(404).json({ error: 'Not Found' });
+		res.status(404).json({ error: { message: 'Not found!' } });
 	});
 
 	app.use(errorHandler); // Centralized error handling middleware

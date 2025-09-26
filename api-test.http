@@ -47,3 +47,7 @@ Content-Type: application/json
   "title": "My First Post",
   "content": "This is the content of my first post."
 }
+
+### List user's posts
+
+GET http://localhost:3000/users/1/posts HTTP/1.1
