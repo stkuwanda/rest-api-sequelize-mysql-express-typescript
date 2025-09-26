@@ -16,7 +16,7 @@ export const createPostRoutes = (app: Express) => {
 			const user = await repository.getUserById(userId);
 
 			if (!user) {
-				return res.status(404).json({ error: 'User not found!' });
+				return res.status(404).json({ error: 'Not found!' });
 			}
 
 			const post = await repository.createUserPost(user, postPayload);
@@ -32,7 +32,7 @@ export const createPostRoutes = (app: Express) => {
 			const user = await repository.getUserById(userId); // Fetching the user first then fetching posts associated with the user is called lazy loading.
 
 			if (!user) {
-				return res.status(404).json({ error: { message: 'User not found!' } });
+				return res.status(404).json({ error: { message: 'Not found!' } });
 			}
 
 			const posts = await repository.getPostsByUser(user);
