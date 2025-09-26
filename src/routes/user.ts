@@ -20,6 +20,7 @@ export const createUserRoutes = (app: Express) => {
 	app.get('/users/:id', asyncHandler(async (req: Request, res: Response) => {
 		const userId = parseInt(req.params.id, 10);
 		const user = await repository.getUserById(userId);
+
 		if (user) {
 			res.status(200).json(user);
 		} else {
@@ -30,11 +31,11 @@ export const createUserRoutes = (app: Express) => {
 	// Update user by ID
 	app.put('/users/:id', asyncHandler(async (req: Request, res: Response) => {
 		const userId = parseInt(req.params.id, 10);
+		
 		const userPayload = {
 			name: req.body.name,
 			email: req.body.email,
 		};
-		console.log('userPayload: \n', userPayload);
 
 		const updatedUser = await repository.updateUser(userId, userPayload);
 		res.status(200).json({ user: updatedUser });
