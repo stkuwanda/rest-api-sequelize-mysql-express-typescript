@@ -6,6 +6,7 @@ import {
 import {
 	AllowNull,
 	BelongsTo,
+	BelongsToMany,
 	Column,
 	CreatedAt,
 	DataType,
@@ -15,6 +16,8 @@ import {
 	UpdatedAt,
 } from 'sequelize-typescript';
 import User from './User';
+import Tag from './Tag';
+import PostTag from './PostTag';
 
 @Table({
 	tableName: 'posts',
@@ -55,6 +58,9 @@ export default class Post extends Model<
 
 	@BelongsTo(() => User) // Association with User model
 	declare author?: InferAttributes<User>; // Optional association to avoid circular dependency issues
+
+	@BelongsToMany(() => Tag, () => PostTag) // Many-to-many association with Tag model through PostTag
+	declare tags?: InferAttributes<Tag>[]; // Optional association to avoid circular dependency issues
 
 	// Override toJSON to exclude timestamps in responses
 	public toJSON() {
