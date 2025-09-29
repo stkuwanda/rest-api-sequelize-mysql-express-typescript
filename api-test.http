@@ -45,7 +45,8 @@ Content-Type: application/json
 {
   "user_id": 1,
   "title": "My First Post",
-  "content": "This is the content of my first post."
+  "content": "This is the content of my first post.",
+  "tags": ["introduction", "firstpost"]
 }
 
 ### List user's posts
