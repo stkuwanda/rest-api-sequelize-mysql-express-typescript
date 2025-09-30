@@ -10,6 +10,7 @@ export const up: Migration = async ({ context: sequelize }) => {
 				model: 'posts',
 				key: 'id',
 			},
+			primaryKey: true,
 			onDelete: 'CASCADE', // When a post is deleted, remove associated entries
 			onUpdate: 'CASCADE', // Update foreign keys on post ID change
 		},

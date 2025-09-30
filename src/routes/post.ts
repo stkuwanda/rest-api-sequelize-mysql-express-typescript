@@ -12,14 +12,14 @@ export const createPostRoutes = (app: Express) => {
 				title: req.body.title,
 				body: req.body.content,
 			};
-
+			const tags = req.body.tags; // Expecting an array of tag names
 			const user = await repository.getUserById(userId);
 
 			if (!user) {
 				return res.status(404).json({ error: 'Not found!' });
 			}
 
-			const post = await repository.createUserPost(user, postPayload);
+			const post = await repository.createUserPost(user, postPayload, tags);
 			res.status(201).json({ post });
 		})
 	);
