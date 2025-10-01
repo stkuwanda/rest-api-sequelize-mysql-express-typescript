@@ -12,8 +12,8 @@ POST http://localhost:3000/users HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "email": "john@doe.com"
+    "name": "John Doe",
+    "email": "john@doe.com"
 }
 
 ### Update a user
@@ -22,7 +22,7 @@ PUT http://localhost:3000/users/1 HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Alex Doe"
+    "name": "Alex Doe"
 }
 
 ### Delete a user
@@ -43,10 +43,13 @@ POST http://localhost:3000/posts HTTP/1.1
 Content-Type: application/json
 
 {
-  "user_id": 1,
-  "title": "My First Post",
-  "content": "This is the content of my first post.",
-  "tags": ["introduction", "firstpost"]
+    "user_id": 1,
+    "title": "My First Post",
+    "content": "This is the content of my first post.",
+    "tags": [
+        "introduction",
+        "firstpost"
+    ]
 }
 
 ### List user's posts
@@ -56,3 +59,7 @@ GET http://localhost:3000/users/1/posts HTTP/1.1
 ### List posts
 
 GET http://localhost:3000/posts HTTP/1.1
+
+### List posts by tag
+
+GET http://localhost:3000/tags/1/posts HTTP/1.1

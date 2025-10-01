@@ -48,4 +48,14 @@ export const createPostRoutes = (app: Express) => {
 			res.status(200).json({ posts });
 		})
 	);
+
+	// Get posts by tag ID
+	app.get(
+		'/tags/:id/posts',
+		asyncHandler(async (req: Request, res: Response) => {
+			const tagId = parseInt(req.params.id, 10);
+			const posts = await repository.getPostsByTagId(tagId);
+			res.status(200).json({ posts });
+		})
+	);
 };

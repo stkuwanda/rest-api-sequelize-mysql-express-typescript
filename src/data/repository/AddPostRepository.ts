@@ -70,5 +70,29 @@ export function AddPostRepository<TBase extends Constructor<BaseRepository>>(
 				], // Include associated user (author) data. This is an example of eager loading.
 			});
 		}
+
+		// New method to get posts by tag ID
+		async getPostsByTagId(tagId: number) {
+			const tag = await Tag.findByPk(tagId);
+
+			// If the tag doesn't exist throw an error
+			if (!tag) {
+				throw new Error('Tag not found!');
+			}
+
+			// Using the association method to get posts for the tag
+			return tag.$get('posts', {
+				limit: this.defaultLimit,
+				include: [
+					{ model: User, as: 'author', attributes: ['id', 'name'] }, // Include author details
+					{
+						model: Tag,
+						as: 'tags',
+						through: { attributes: [] }, // Exclude junction table attributes
+					},
+				],
+				joinTableAttributes: [], // Exclude junction table attributes
+			} as any); // Type assertion to any to bypass type issues
+		}
 	};
 }
