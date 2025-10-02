@@ -5,6 +5,7 @@ import {
 } from 'sequelize';
 import {
 	AllowNull,
+	BeforeCreate,
 	BelongsTo,
 	BelongsToMany,
 	Column,
@@ -47,6 +48,12 @@ export default class Post extends Model<
 	@Column(DataType.TEXT)
 	declare body: string;
 
+	@Column({
+		type: DataType.STRING,
+		unique: true,
+	})
+	declare slug: string;
+
 	@CreatedAt
 	declare created_at: CreationOptional<Date>;
 
@@ -61,6 +68,29 @@ export default class Post extends Model<
 
 	@BelongsToMany(() => Tag, () => PostTag) // Many-to-many association with Tag model through PostTag
 	declare tags?: InferAttributes<Tag>[]; // Optional association to avoid circular dependency issues
+
+	@BeforeCreate // Hook to generate slug before creating a post
+	static async generateSlug(instance: Post) {
+		// Check if the slug already exists in the database
+		const count = await Post.count({
+			where: { title: instance.title },
+		});
+
+		// If a post with the same title exists, append a suffix to make the slug unique
+		let suffix = '';
+		if (count > 0) {
+			suffix = `-${count + 1}`; // Append a suffix if the slug already exists
+		}
+
+		console.log(`Suffix to be added: ${suffix}`);
+
+		// Generate a unique slug based on the title
+		instance.slug = instance.title
+			.toLowerCase() // Convert to lowercase
+			.replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric characters with hyphens
+			.replace(/^-+|-+$/g, '') // Trim leading and trailing hyphens
+		+ suffix; // Append the suffix if necessary
+	}
 
 	// Override toJSON to exclude timestamps in responses
 	public toJSON() {
