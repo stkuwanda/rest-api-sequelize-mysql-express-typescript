@@ -32,6 +32,15 @@ export default class User extends Model<
 	})
 	declare id: CreationOptional<number>;
 
+	// @AllowNull(false) // Ensure name cannot be null
+	// @Column({
+	// 	validate: {
+	// 		notEmpty: true, // Ensure name is not an empty string
+	// 		len: [2, 100], // Ensure name length is between 2 and 100 characters
+	// 	},
+	// })
+	// declare name: string;
+
 	@AllowNull(false) // Ensure name cannot be null
 	@Column({
 		validate: {
@@ -39,7 +48,9 @@ export default class User extends Model<
 			len: [2, 100], // Ensure name length is between 2 and 100 characters
 		},
 	})
-	declare name: string;
+	get name(): string { // Custom getter to always return name in uppercase
+		return this.getDataValue('name').toUpperCase(); // Always return name in uppercase
+	}
 
 	@Unique // Ensure email is unique
 	@AllowNull(false) // Ensure email cannot be null
