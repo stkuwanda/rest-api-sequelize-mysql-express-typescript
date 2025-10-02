@@ -68,6 +68,16 @@ export default class User extends Model<
 		this.setDataValue('email', value ? value.toLowerCase() : value); // Always store email in lowercase
 	}
 
+	// Virtual column example: joined_on (formatted created_at date).
+	// This column does not exist in the database but is computed.
+	// The CreationOptional type indicates that this field is optional during creation.
+	@Column(DataType.VIRTUAL)
+	get joined_on(): CreationOptional<string> { 
+		// Custom getter to format created_at date
+		const createdAt = this.getDataValue('created_at');
+		return createdAt ? createdAt.toISOString().split('T')[0] : ''; // Format as YYYY-MM-DD
+	}
+
 	@CreatedAt
 	declare created_at: CreationOptional<Date>;
 
