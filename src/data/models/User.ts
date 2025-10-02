@@ -13,7 +13,7 @@ import {
 	CreatedAt,
 	AllowNull,
 	IsEmail,
-	HasMany
+	HasMany,
 } from 'sequelize-typescript';
 import Post from './Post';
 
@@ -48,15 +48,25 @@ export default class User extends Model<
 			len: [2, 100], // Ensure name length is between 2 and 100 characters
 		},
 	})
-	get name(): string { // Custom getter to always return name in uppercase
+	get name(): string {
+		// Custom getter to always return name in uppercase
 		return this.getDataValue('name').toUpperCase(); // Always return name in uppercase
 	}
+
+	// @Unique // Ensure email is unique
+	// @AllowNull(false) // Ensure email cannot be null
+	// @IsEmail // Validate email format
+	// @Column
+	// declare email: string;
 
 	@Unique // Ensure email is unique
 	@AllowNull(false) // Ensure email cannot be null
 	@IsEmail // Validate email format
 	@Column
-	declare email: string;
+	set email(value: string) {
+		// Custom setter to store email in lowercase
+		this.setDataValue('email', value ? value.toLowerCase() : value); // Always store email in lowercase
+	}
 
 	@CreatedAt
 	declare created_at: CreationOptional<Date>;
@@ -67,7 +77,7 @@ export default class User extends Model<
 	@HasMany(() => Post) // One-to-many relationship with Post model
 	declare posts?: InferAttributes<Post>[]; // Optional array of associated posts
 
-  // Override toJSON to exclude timestamps in responses
+	// Override toJSON to exclude timestamps in responses
 	public toJSON() {
 		return { ...this.get(), created_at: undefined, updated_at: undefined };
 	}
