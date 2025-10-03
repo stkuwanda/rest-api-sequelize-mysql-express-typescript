@@ -31,11 +31,27 @@ export const createUserRoutes = (app: Express) => {
 
 			if (user) {
 				// res.status(200).json(user);
-				res
-					.status(200)
-					.json({
-						user: { ...user?.get(), original_name: user?.getDataValue('name') },
-					});
+				res.status(200).json({
+					user: { ...user?.get(), original_name: user?.getDataValue('name') },
+				});
+			} else {
+				res.status(404).json({ error: 'User not found' });
+			}
+		})
+	);
+
+	// Get user by ID including soft-deleted users
+	app.get(
+		'/users/with-soft-deletes/:id',
+		asyncHandler(async (req: Request, res: Response) => {
+			const userId = parseInt(req.params.id, 10);
+			const user = await repository.getUserByIdIncludeSoftDeletes(userId);
+
+			if (user) {
+				// res.status(200).json(user);
+				res.status(200).json({
+					user: { ...user?.get(), original_name: user?.getDataValue('name') },
+				});
 			} else {
 				res.status(404).json({ error: 'User not found' });
 			}

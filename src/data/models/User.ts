@@ -14,12 +14,15 @@ import {
 	AllowNull,
 	IsEmail,
 	HasMany,
+	DeletedAt,
 } from 'sequelize-typescript';
 import Post from './Post';
 
 @Table({
 	tableName: 'users',
 	modelName: 'User',
+	paranoid: true, // Enable soft deletes (adds deletedAt timestamp)
+	timestamps: true, // Enable createdAt and updatedAt timestamps
 })
 export default class User extends Model<
 	InferAttributes<User>,
@@ -84,11 +87,14 @@ export default class User extends Model<
 	@UpdatedAt
 	declare updated_at: CreationOptional<Date>;
 
+	@DeletedAt
+	declare deleted_at: CreationOptional<Date>;
+
 	@HasMany(() => Post) // One-to-many relationship with Post model
 	declare posts?: InferAttributes<Post>[]; // Optional array of associated posts
 
 	// Override toJSON to exclude timestamps in responses
 	public toJSON() {
-		return { ...this.get(), created_at: undefined, updated_at: undefined };
+		return { ...this.get(), created_at: undefined, updated_at: undefined, deleted_at: undefined };
 	}
 }

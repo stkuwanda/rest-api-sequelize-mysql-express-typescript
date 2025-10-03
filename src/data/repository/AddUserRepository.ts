@@ -25,6 +25,11 @@ export function AddUserRepository<TBase extends Constructor<BaseRepository>>(
 			return User.findByPk(id);
 		}
 
+		// Get a user by their ID including soft-deleted users
+		getUserByIdIncludeSoftDeletes(id: number): Promise<User | null> {
+			return User.findByPk(id, { paranoid: false });
+		}
+
 		// Update a user by their ID
 		// updateUser(id: number, updates: Partial<{ name: string; email: string }>): Promise<User | null> {
 		//   return User.findByPk(id).then(user => {
