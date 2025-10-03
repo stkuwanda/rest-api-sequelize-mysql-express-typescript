@@ -30,6 +30,10 @@ Content-Type: application/json
     "email": "soft@softdelete.com"
 }
 
+### Restore a soft-deleted user
+
+POST  http://localhost:3000/users/restore/1 HTTP/1.1
+
 ### Update a user
 
 PUT http://localhost:3000/users/1 HTTP/1.1

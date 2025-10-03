@@ -58,6 +58,20 @@ export const createUserRoutes = (app: Express) => {
 		})
 	);
 
+	// Restore soft-deleted user by ID
+	app.post(
+		'/users/restore/:id',
+		asyncHandler(async (req: Request, res: Response) => {
+			const userId = parseInt(req.params.id, 10);
+			const restored = await repository.restoreUserById(userId);
+			if (restored) {
+				res.status(200).json({ message: 'User restored successfully' });
+			} else {
+				res.status(404).json({ error: 'User not found or not deleted' });
+			}
+		})
+	);
+
 	// Update user by ID
 	app.put(
 		'/users/:id',

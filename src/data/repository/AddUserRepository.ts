@@ -30,6 +30,18 @@ export function AddUserRepository<TBase extends Constructor<BaseRepository>>(
 			return User.findByPk(id, { paranoid: false });
 		}
 
+		// Restore a soft-deleted user by their ID
+		async restoreUserById(id: number): Promise<boolean> {
+			const user = await User.findByPk(id, { paranoid: false });
+			if (user && user.deleted_at) {
+				// await user.restore(); // Alternatively, you can use this line
+				await User.restore({ where: { id } });
+				return true; // Successfully restored
+			}
+			
+			return false; // User not found or not deleted
+		}
+
 		// Update a user by their ID
 		// updateUser(id: number, updates: Partial<{ name: string; email: string }>): Promise<User | null> {
 		//   return User.findByPk(id).then(user => {
