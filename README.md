@@ -55,6 +55,21 @@ npm run migrate:create -- --name example2-name-table.ts
 npm run migrate:rollback
 ```
 
+#### To create a new seeder migration file on first run:
+```bash
+npm run seeder:create -- --name example-name-seeder.ts --folder src/data/seeders
+```
+
+#### To create a new seeder migration file on second run:
+```bash
+npm run seeder:create -- --name example2-name-seeder.ts
+```
+
+#### To revert seeder migrations:
+```bash
+npm run seeder:rollback
+```
+
 ### 5. Start the Server
 ```bash
 npm start
