@@ -20,7 +20,10 @@
     "build": "tsc",
     "migrate": "dotenv -- node migrate up",
     "migrate:rollback": "dotenv -- node migrate down",
-    "migrate:create": "dotenv -- node migrate create"
+    "migrate:create": "dotenv -- node migrate create",
+    "seeder": "dotenv -- node seeder up",
+    "seeder:rollback": "dotenv -- node seeder down",
+    "seeder:create": "dotenv -- node seeder create"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.2",
